@@ -1,4 +1,4 @@
-const testMode = falses;
+const testMode = false;
 
 let web3;
 let web3Modal;
