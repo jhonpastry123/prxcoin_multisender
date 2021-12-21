@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="./css/bootstrap-select.min.css">
   <link rel="stylesheet" href="./css/style.css" />
   <link rel="stylesheet" href="./css/sweetalert.min.css">
+  <link rel="stylesheet" href="./js/jquery-ui/jquery-ui.min.css">
   <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.15.4/css/pro.min.css" />
   <link href="./js/jquery-linedtextarea/jquery-linedtextarea.css" type="text/css" rel="stylesheet" />
 </head>
@@ -53,7 +54,7 @@
     <!-- Page header part -->
     <div class="headerBox white">
       <div class="headerBg">
-        <h2>Welcome to PXR MultiSender</h2>
+        <h2>Welcome to PRX MultiSender</h2>
         <p>BSC Network</p>
       </div>
     </div>
@@ -103,8 +104,8 @@
                       <div class="row deflationary">
                         <div class="col-6 col-lg-12 col-md-6 col-sm-6 text-left heading-title">
                           <p class="mb-0 tooltip1"
-                            title="Please ignore this if your token isn't deflationary. Most tokens are not, so leave it as is. If your token has deflationary functions, such as token dividends, burning, taxes, etc., please enable this! If you are the token owner and there is an automatic LP function and you have not added a liquidity pool, please turn off the automatic LP first!">
-                            Deflationary<i class="fa fa-question-circle ml-1"></i>
+                            title="">
+                            Deflationary <i class="fas fa-question-circle ml-1"></i>
                           </p>
                         </div>
                         <div class="col-6 col-lg-12 col-md-6 col-sm-6">
@@ -266,26 +267,26 @@
                     <div class="col-12">
                       <ul class="nav nav-tabs">
                         <li class="nav-item">
-                          <a class="nav-link active" data-toggle="tab" href="#home">Waiting list(3)</a>
+                          <a class="nav-link active" id="waiting_list_label" data-toggle="tab" href="#waiting_content">Waiting list(<span id="waiting_count">0</span>)</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" data-toggle="tab" href="#menu1">Send Success List(0)</a>
+                          <a class="nav-link" id="success_list_label" data-toggle="tab" href="#success_content">Send Success List(<span id="success_count">0</span>)</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" data-toggle="tab" href="#menu2">Send Failure List(0)</a>
+                          <a class="nav-link" id="failure_list_label" data-toggle="tab" href="#failure_content">Send Failure List(<span id="failure_count">0</span>)</a>
                         </li>
                       </ul>
 
                       <!-- Tab panes -->
                       <div class="tab-content mt-3">
-                        <div class="tab-pane container active" id="home">
-                          <textarea class="form-control" id="waiting_list" rows="6"></textarea>
+                        <div class="tab-pane container active" id="waiting_content">
+                          <textarea class="form-control" id="waiting_list" rows="6" readonly></textarea>
                         </div>
-                        <div class="tab-pane container fade" id="menu1">
-                          <textarea class="form-control" id="success_list" rows="6"></textarea>
+                        <div class="tab-pane container fade" id="success_content">
+                          <textarea class="form-control" id="success_list" rows="6" readonly></textarea>
                         </div>
-                        <div class="tab-pane container fade" id="menu2">
-                          <textarea class="form-control" id="failure_list" rows="6"></textarea>
+                        <div class="tab-pane container fade" id="failure_content">
+                          <textarea class="form-control" id="failure_list" rows="6" readonly></textarea>
                         </div>
                       </div>
                     </div>
@@ -348,7 +349,7 @@
 
 <script type="text/javascript" src="./js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="./js/jquery-linedtextarea/jquery-linedtextarea.js"></script>
-<script type="text/javascript" src="./js/jquery-ui.js"></script>
+<script type="text/javascript" src="./js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="./js/popper.min.js"></script>
 <script type="text/javascript" src="./js/bootstrap.min.js"></script>
 <script type="text/javascript" src="./js/bootstrap-select.min.js"></script>
@@ -369,8 +370,8 @@
 <script type="text/javascript" src="js/web3/walletconnect/index.min.js"></script>
 <script type="text/javascript" src="js/web3/fortmatic/index.min.js"></script>
 
-
 <script src="./js/main.js"></script>
+<script type="text/javascript" src="./js/TokenData.js"></script>
 <script type="text/javascript" src="./js/bignumber.js"></script>
 
 </html>
