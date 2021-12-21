@@ -1,0 +1,376 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="shortcut icon" href="./assets/images/favicon.png" />
+  <link rel="apple-touch-icon" href="./assets/images/favicon.png" />
+  <link rel="shortcut icon" href="./assets/images/favicon.png">
+  <!-- Meta -->
+  <title>BSC Token MultiSender</title>
+  <meta name="description" content="BEP20 Token MultiSender" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1" />
+  <meta name="theme-color" content="#1FC7D4" />
+
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/sweetalert.min.css">
+  <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.15.4/css/pro.min.css" />
+  <link href="./js/jquery-linedtextarea/jquery-linedtextarea.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body class="darkmode">
+  <section>
+    <header>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div>
+                  <a class="navbar-brand">
+                    <img src="./assets/images/logo.png" class="img-fluid">
+                  </a>
+                </div>
+                <div>
+                  <ul class="navbar-nav py-1">
+                    <li class="nav-item">
+                      <a class="nav-link head_nav connect-wallet"
+                        style="font-size: 16px; border: 2px #f9b707 solid; border-radius: 25px; padding: 8px 14px;">
+                        <i class="fas fa-wallet pr-1"></i>Connect Wallet
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Page header part -->
+    <div class="headerBox white">
+      <div class="headerBg">
+        <h2>Welcome to PXR MultiSender</h2>
+        <p>BSC Network</p>
+      </div>
+    </div>
+    <!-- Page header part -->
+
+    <div class="container-fluid">
+      <!-- Page Container part -->
+      <!-- MultiStep Form -->
+      <div class="row justify-content-center white">
+        <div class="col-lg-6 col-md-9 col-sm-12">
+          <div id="msform">
+            <!-- progressbar -->
+            <ul id="progressbar">
+              <li class="active">Prepare</li>
+              <li>Confirm</li>
+              <li>Send</li>
+            </ul>
+            <!-- fieldsets -->
+            <fieldset class="first">
+              <div class="card card-main">
+                <div class="card-body">
+                  <!-- Token header part -->
+                  <div class="row">
+                    <div class="col-12 col-lg-9 col-md-12 col-sm-12">
+                      <div class="row align-items-center token-header" style="padding: 0px 15px;">
+                        <div class="heading-title">
+                          <h5>Token</h5>
+                        </div>
+                        <div class="contract_link">
+                          <a class="button bt-blue"
+                            href="https://bscscan.com/address/0xb108c55ef912f153e9c117266b88d6b36f7dc5e1"
+                            target="_blank">
+                            Contract (Mainnet)</a>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="col-12">
+                          <select class="selectpicker" id="token" data-live-search="true" data-width="100%">
+                            <option data-subtext="0x71238884764fc000e35456e285d888080dbef2b0">PRX</option>
+                            <option data-subtext="0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c">BNB</option>
+                            <option data-subtext="0x55d398326f99059ff775485246999027b3197955">USDT</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-12 col-sm-12">
+                      <div class="row deflationary">
+                        <div class="col-6 col-lg-12 col-md-6 col-sm-6 text-left heading-title">
+                          <p class="mb-0 tooltip1"
+                            title="Please ignore this if your token isn't deflationary. Most tokens are not, so leave it as is. If your token has deflationary functions, such as token dividends, burning, taxes, etc., please enable this! If you are the token owner and there is an automatic LP function and you have not added a liquidity pool, please turn off the automatic LP first!">
+                            Deflationary<i class="fa fa-question-circle ml-1"></i>
+                          </p>
+                        </div>
+                        <div class="col-6 col-lg-12 col-md-6 col-sm-6">
+                          <div class="custom-control custom-switch custom-switch-md d-flex">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                            <label class="custom-control-label" for="customSwitch3"></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Token header part -->
+                  <!-- Amount header part -->
+                  <div class="row mt-3 justify-content-between" style="padding: 0px 15px;">
+                    <div class="heading-title">
+                      <h5>Addresses with Amounts</h5>
+                    </div>
+                    <div class="text-right">
+                      <a class="modal_open">Auto add amounts</a>
+                    </div>
+                    <div class="text-right">
+                      <a id="upload_file">Upload file</a>
+                    </div>
+                  </div>
+                  <!-- Amount header part -->
+                  <!-- Amount details part -->
+                  <div class="row mt-3">
+                    <div class="col-12">
+                      <textarea class="form-control lined" id="address" rows="13"
+                        placeholder="Insert address and amount, separate with comma"></textarea>
+                      <div class="form-group files" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+                      <input type="file" id="file_body" style="visibility:hidden; height:0px;" class="form-control"
+                        multiple="false">
+                    </div>
+                  </div>
+                  <!-- Amount details part -->
+                  <div class="row justify-content-between" style="padding: 0px 15px;">
+                    <div class="text-left">
+                      <span class="hint-text">The address and amount are separated by commas</span>
+                    </div>
+                    <div class="text-right">
+                      <a class="show_example">Show examples</a>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="alert alert-danger validate text-left">
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-5">
+                    <div class="col-12 action_btn">
+                      <a class="button bt-blue next">Next</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset class="second">
+              <div class="card card-main">
+                <div class="card-body">
+                  <div class="row align-items-center mt-3">
+                    <div class="col-12 heading-title">
+                      <h5>List of recipients</h5>
+                    </div>
+                  </div>
+                  <div class="row align-items-center mt-3">
+                    <div class="col-12">
+                      <table class="table table-responsive">
+                        <thead>
+                          <tr>
+                            <th scope="col" class="heading-title">Wallet</th>
+                            <th scope="col" class="heading-title">Amount</th>
+                            <th scope="col" class="heading-title"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row align-items-center mt-3">
+                    <div class="col-12 heading-title">
+                      <h5>Summary</h5>
+                    </div>
+                  </div>
+                  <div class="row align-items-center mt-3">
+                    <div class="col-12 heading-title">
+                      <ul class="abstract">
+                        <li>
+                          <span class="number" id="total_num">3</span>
+                          <span class="remark">Total number of addresses</span>
+                        </li>
+                        <li>
+                          <span class="number" id="total_amount">4.451 BNB</span>
+                          <span class="remark">Total number of tokens to be sent</span>
+                        </li>
+                        <li>
+                          <span class="number">1</span>
+                          <span class="remark">Total number of transactions needed</span>
+                        </li>
+                        <li>
+                          <span class="number" id="token_balance">0.954131384 BNB</span>
+                          <span class="remark">Your token balance</span>
+                        </li>
+                        <li>
+                          <span class="number" id="cost">0.0455 BNB</span>
+                          <span class="remark">Approximate cost of operation</span>
+                        </li>
+                        <li>
+                          <span class="number" id="bnb_balance">0.954131384 BNB</span>
+                          <span class="remark">Your BNB balance</span>
+                        </li>
+                        <div class="el-loading-mask" style="display: none;">
+                          <div class="el-loading-spinner">
+                            <svg viewBox="25 25 50 50" class="circular">
+                              <circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
+                            </svg>
+                            <!---->
+                          </div>
+                        </div>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row mt-5">
+                    <div class="col-6 action_btn text-left">
+                      <a class="button bt-blue previous">Previous</a>
+                    </div>
+                    <div class="col-6 action_btn text-right">
+                      <a class="button bt-blue next" id="approve_check">Next</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset class="third">
+              <div class="card card-main">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col-12 heading-title">
+                      <h5>A total of 1 needs to be sent, You need to send 1 more times</h5>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-12">
+                      <button class="btn btn-success pending">
+                        <span class="spinner-grow spinner-grow-sm mr-2"></span>Pending confirmation of transaction
+                      </button>
+                      <div class="alert alert-success text-left success_payment">
+                        Congratulations, all your tokens have been sent successfully!
+                      </div>
+                      <div class="alert alert-danger text-left failure_payment">
+                        You have manually cancelled the transaction, to continue, please click send
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-12">
+                      <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                          <a class="nav-link active" data-toggle="tab" href="#home">Waiting list(3)</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" data-toggle="tab" href="#menu1">Send Success List(0)</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" data-toggle="tab" href="#menu2">Send Failure List(0)</a>
+                        </li>
+                      </ul>
+
+                      <!-- Tab panes -->
+                      <div class="tab-content mt-3">
+                        <div class="tab-pane container active" id="home">
+                          <textarea class="form-control" id="waiting_list" rows="6"></textarea>
+                        </div>
+                        <div class="tab-pane container fade" id="menu1">
+                          <textarea class="form-control" id="success_list" rows="6"></textarea>
+                        </div>
+                        <div class="tab-pane container fade" id="menu2">
+                          <textarea class="form-control" id="failure_list" rows="6"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-5">
+                    <div class="col-12 action_btn">
+                      <a class="button bt-blue previous">Previous</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+      <!-- /.MultiStep Form -->
+
+      <!-- Page Container part -->
+    </div>
+    <div class="pp-footer mt-5 mb-3">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-4 text-muted mt-md-0 mt-3 text-md-start text-center">Copyright © 2021. All Rights Reserved
+            by PRXCOIN</div>
+          <div class="col-md-4 text-center text-muted">Version 1.0.0</div>
+          <div class="col-md-4">
+            <a class="text-warning text-decoration-none d-flex align-items-center justify-content-md-end justify-content-center"
+              href="mailto:info@prxcoin.io"><i class="fas fa-envelope mr-1"></i><span>Customer Support</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0">
+          <h5 class="modal-title" id="modal_label">Amount can be automatically added after each address</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="amount" style="color: black;">Auto add amounts</label>
+            <input type="number" class="form-control" id="amount" step="0.000000001">
+          </div>
+        </div>
+        <div class="modal-footer border-top-0 d-flex justify-content-md-end">
+          <button class="btn btn-default close_btn">Close</button>
+          <button class="btn btn-primary confirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script type="text/javascript" src="./js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="./js/jquery-linedtextarea/jquery-linedtextarea.js"></script>
+<script type="text/javascript" src="./js/jquery-ui.js"></script>
+<script type="text/javascript" src="./js/popper.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="./js/xlsx.full.min.js"></script>
+
+
+<!-- sweet alert -->
+<script type="text/javascript" src="./js/sweetalert2.min.js"></script>
+
+
+<!-- abi -->
+<script type="text/javascript" src="./js/abi.js"></script>
+<script type="text/javascript" src="./js/common.js"></script>
+
+<script type="text/javascript" src="js/web3/dist/web3.min.js"></script>
+<script type="text/javascript" src="js/web3/web3modal.js"></script>
+<script type="text/javascript" src="js/web3/evm-chains/index.min.js"></script>
+<script type="text/javascript" src="js/web3/walletconnect/index.min.js"></script>
+<script type="text/javascript" src="js/web3/fortmatic/index.min.js"></script>
+
+
+<script src="./js/main.js"></script>
+<script type="text/javascript" src="./js/bignumber.js"></script>
+
+</html>
