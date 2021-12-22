@@ -352,13 +352,15 @@ $("body").on('click', 'a.next', async function () {
         if (current_fs.attr("class") == "second") {
             clear_confirmation();
             if ($("#approve_check").text() == "Approve") {
+                $("#approve_check").attr("disabled", true);
+                $("#approve_check").html(`<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>`)
                 var result = await approve();
-                $("#approve_check").text("")
                 if (result) {
                     $("#approve_check").text("Next");
                 } else {
                     $("#approve_check").text("Approve");
                 }
+                $("#approve_check").removeAttr("disabled");
                 animating = false;
             } else {
                 $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
