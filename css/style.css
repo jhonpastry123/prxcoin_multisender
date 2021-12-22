@@ -124,7 +124,7 @@ hr {
 header {
     background: rgba(18, 18, 29, 0.3);
     backdrop-filter: blur(8px);
-    padding: 8px 80px;
+    padding: 8px 40px;
     position: fixed;
     display: inline-block;
     top: 0;
@@ -147,7 +147,7 @@ header .navbar-brand img {
 }
 
 header .navbar-light .nav-item {
-    margin: 0 10px;
+    margin: 0 0px;
 }
 
 header .navbar-light .nav-item .nav-link {
@@ -526,7 +526,7 @@ ul.nav.nav-tabs .nav-link.active a {
 
 @media (max-width: 576px){
     header {
-        padding: 8px 10px;
+        padding: 8px 0px;
     }
     .card-body {
         padding: 1rem 0.25rem!important;

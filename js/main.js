@@ -160,7 +160,8 @@ async function fetchAccountData() {
         multiSenderContract = new web3.eth.Contract(multiSenderAbi, multiSenderAddress);
         marketingFee = await multiSenderContract.methods.marketingFee().call();
 
-        jQuery(".connect-wallet").html(strDisconnectWallet);
+
+        jQuery(".connect-wallet").html("<i class=\"fas fa-wallet pr-1\"></i>" + selectedAccount.substr(0, 7) + "..." + selectedAccount.substr(selectedAccount.length-4, selectedAccount.length));
         jQuery(".connect-wallet").removeClass("no-event");
 
     }
@@ -190,8 +191,9 @@ function init() {
         cacheProvider: true, // optional
         providerOptions, // required
         disableInjectedProvider: isMobile, // optional. For MetaMask / Brave / Opera.
-
     });
+
+    console.log(provider);
 
 }
 
@@ -271,7 +273,7 @@ async function multiTransfer() {
         })
     });
 
-    value = new BigNumber(cost);
+    value = new BigNumber(web3.utils.toWei(cost.toString(), "ether"));
 
     try {
         var result = await multiSenderContract.methods.multiTransfer(receivers, totalAmount, token_address, isBNB).send({ from: selectedAccount, value: value });
