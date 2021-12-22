@@ -193,8 +193,19 @@ function init() {
         disableInjectedProvider: isMobile, // optional. For MetaMask / Brave / Opera.
     });
 
+<<<<<<< HEAD
     console.log(provider);
 
+=======
+    $(".tooltip1").tooltip({
+        classes: {
+            "ui-tooltip": "highlight"
+        },
+        hide: { effect: "explode", duration: 1000 },
+        content: "Please ignore this if your token isn't deflationary. Most tokens are not, so leave it as is. If your token has deflationary functions, such as token dividends, burning, taxes, etc., please enable this! If you are the token owner and there is an automatic LP function and you have not added a liquidity pool, please turn off the automatic LP first!",
+        track: true
+    });
+>>>>>>> b56bccfade9a02a3da4ef6ff809c0006765a3bea
 }
 
 async function getDataInfo() {
@@ -280,7 +291,7 @@ async function multiTransfer() {
         return result.status;
     } catch (exception) {
         console.log(exception);
-        return false;
+        return 2;
     }
 
 }
@@ -351,6 +362,7 @@ $("body").on('click', 'a.next', async function () {
         }
 
         if (current_fs.attr("class") == "second") {
+            clear_confirmation();
             if ($("#approve_check").text() == "Approve") {
                 var result = await approve();
                 $("#approve_check").text("")
@@ -385,25 +397,58 @@ $("body").on('click', 'a.next', async function () {
                 //hide the current fieldset with style
 
                 var component = $("#waiting_list");
+                var component1 = $("#success_list");
+                var component2 = $("#failure_list");
+
                 arrayToTextareaComponent(address_arr, component);
+                $("#waiting_count").text(address_arr.length);
 
                 var result = await multiTransfer();
 
-                if (result) {
-                    $(".pending").hide();
-                    $(".success_payment").show();
-                    $(".failure_payment").hide();
-                    var component1 = $("#success_list");
-                    arrayToTextareaComponent(address_arr, component1);
-                    component.val("").change();
-                }
-                else {
+                if (result == 0) {
                     $(".pending").hide();
                     $(".success_payment").hide();
                     $(".failure_payment").show();
-                    var component1 = $("#failure_list");
-                    arrayToTextareaComponent(address_arr, component1);
+
                     component.val("").change();
+                    component1.val("").change();
+                    arrayToTextareaComponent(address_arr, component2);
+
+                    $("#waiting_count").text(0);
+                    $("#success_count").text(0);
+                    $("#failure_count").text(address_arr.length);
+
+                    $('#failure_list_label').trigger('click');
+                }
+                else if (result == 1) {
+                    $(".pending").hide();
+                    $(".success_payment").show();
+                    $(".failure_payment").hide();
+
+                    component.val("").change();
+                    arrayToTextareaComponent(address_arr, component1);
+                    component2.val("").change();
+
+                    $("#waiting_count").text(0);
+                    $("#success_count").text(address_arr.length);
+                    $("#failure_count").text(0);
+
+                    $('#success_list_label').trigger('click');
+                }
+                else if (result == 2) {
+                    $(".pending").hide();
+                    $(".success_payment").hide();
+                    $(".failure_payment").show();
+
+                    arrayToTextareaComponent(address_arr, component);
+                    component1.val("").change();
+                    component2.val("").change();
+
+                    $("#waiting_count").text(address_arr.length);
+                    $("#success_count").text(0);
+                    $("#failure_count").text(0);
+
+                    $('#waiting_list_label').trigger('click');
                 }
             }
         }
@@ -417,6 +462,9 @@ $("body").on('click', 'a.previous', function () {
     animating = true;
     current_fs = $(this).parent().parent().parent().parent().parent();
     previous_fs = current_fs.prev();
+    if (current_fs.attr("class") == "third") {
+        set_table();
+    }
 
     //de-activate current step on progressbar
     $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
@@ -748,4 +796,16 @@ function validate_connection() {
         return false;
     }
     return true;
+}
+
+function clear_confirmation() {
+    $("#waiting_list").val("");
+    $("#success_list").val("");
+    $("#failure_list").val("");
+    $("#waiting_count").text(0);
+    $("#success_count").text(0);
+    $("#failure_count").text(0);
+    $(".pending").show();
+    $(".success_payment").hide();
+    $(".failure_payment").hide();
 }

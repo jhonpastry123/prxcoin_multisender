@@ -36,7 +36,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: "Montserrat", sans-serif;
+    font-family: sans-serif;
     font-weight: normal;
     color: #000;
     margin-top: 0px;
@@ -147,7 +147,11 @@ header .navbar-brand img {
 }
 
 header .navbar-light .nav-item {
+<<<<<<< HEAD
     margin: 0 0px;
+=======
+    margin: 0;
+>>>>>>> b56bccfade9a02a3da4ef6ff809c0006765a3bea
 }
 
 header .navbar-light .nav-item .nav-link {
