@@ -160,7 +160,7 @@ header .navbar-light .nav-item .nav-link {
     -ms-transition: all 250ms ease-in-out 0s;
     -o-transition: all 250ms ease-in-out 0s;
     transition: all 250ms ease-in-out 0s;
-    text-decoration: none!important;
+    text-decoration: none !important;
 }
 
 header .navbar-light .navbar-nav .nav-link:before {
@@ -256,6 +256,7 @@ header.menu-sticky {
     font-size: 28px;
     text-align: center;
     margin: 60px 0 40px 0;
+    padding: 0 5px;
 }
 
 .headerBg p {
@@ -280,7 +281,7 @@ header.menu-sticky {
     background: transparent;
 }
 
-#msform .card .heading-title {
+.heading-title {
     background-image: linear-gradient(to bottom, #ffe964 22%, #dcaa35 24%, #dcaa35 40%, #ffe964 78%);
     -webkit-background-clip: text;
     background-clip: text;
@@ -301,11 +302,11 @@ header.menu-sticky {
     border-radius: 10px;
     background-image: linear-gradient(150deg, #fe9600 0%, rgb(249 183 7) 78%);
     text-decoration: none;
-    margin-left: 10px!important;
+    margin-left: 10px !important;
 }
 
 #upload_file {
-    color: #f9b707!important;
+    color: #f9b707 !important;
     text-decoration: underline;
 }
 
@@ -476,14 +477,20 @@ ul.nav.nav-tabs .nav-link.active a {
     margin: 0;
     width: 100% !important;
     display: none;
-    background-color:#f1f1f1;
-    position:relative
+    background-color: #f1f1f1;
+    position: relative
 }
-.files:focus{     outline: 2px dashed #92b0b3;  outline-offset: -10px;
+
+.files:focus {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
-    transition: outline-offset .15s ease-in-out, background-color .15s linear; border:1px solid #92b0b3;
- }
-.files:after {  pointer-events: none;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    border: 1px solid #92b0b3;
+}
+
+.files:after {
+    pointer-events: none;
     position: absolute;
     top: 60px;
     left: 0;
@@ -497,10 +504,12 @@ ul.nav.nav-tabs .nav-link.active a {
     background-size: 100%;
     background-repeat: no-repeat;
 }
+
 .files:before {
     position: absolute;
     bottom: 50px;
-    left: 0;  pointer-events: none;
+    left: 0;
+    pointer-events: none;
     width: 100%;
     right: 0;
     height: 20px;
@@ -514,7 +523,7 @@ ul.nav.nav-tabs .nav-link.active a {
     text-align: center;
 }
 
-.files:hover{
+.files:hover {
     background: lightgray;
     opacity: 0.4;
     cursor: pointer;
@@ -524,17 +533,19 @@ ul.nav.nav-tabs .nav-link.active a {
     display: none;
 }
 
-@media (max-width: 576px){
+@media (max-width: 576px) {
     header {
         padding: 8px 0px;
     }
+
     .card-body {
-        padding: 1rem 0.25rem!important;
+        padding: 1rem 0.25rem !important;
     }
+
     .token-header {
         justify-content: space-between;
     }
-    
+
 }
 
 @media (min-width: 0px) {
@@ -545,7 +556,7 @@ ul.nav.nav-tabs .nav-link.active a {
 
 @media (min-width: 1336px) {
     .table {
-        display: table!important;
+        display: table !important;
     }
 }
 
@@ -553,8 +564,8 @@ ul.nav.nav-tabs .nav-link.active a {
     cursor: pointer;
 }
 
-.underline a{
-    text-decoration: underline!important;
+.underline a {
+    text-decoration: underline !important;
 }
 
 .success_payment {
@@ -562,5 +573,89 @@ ul.nav.nav-tabs .nav-link.active a {
 }
 
 .failure_payment {
+    display: none;
+}
+
+.wallet_link {
+    text-decoration: none;
+}
+
+.wallet_link:hover {
+    text-decoration: underline;
+}
+
+.modal-content {
+    border: 1px #f9b707 solid;
+    border-radius: 25px;
+    padding: 8px 14px;
+    background: #000;
+}
+
+.modal-header {
+    border-bottom: 1px solid #625d34;
+}
+
+.modal-footer {
+    border-top: 1px solid #625d34;
+}
+
+.confirm {
+    color: #000 !important;
+    cursor: pointer;
+    padding: 7px 20px;
+    border: none;
+    font-weight: 800;
+    font-size: 14px;
+    font-family: sans-serif;
+    border-radius: 25px;
+    background-image: linear-gradient(150deg, #fe9600 0%, rgb(249 183 7) 78%);
+    text-decoration: none;
+}
+
+.close_btn {
+    color: #f9b707;
+    cursor: pointer;
+    padding: 7px 20px;
+    border: 2px #f9b707 solid;
+    font-weight: 800;
+    font-size: 14px;
+    font-family: sans-serif;
+    border-radius: 25px;
+    text-decoration: none;
+    background: transparent;
+}
+
+.close_btn:hover, .close_btn:active, .close_btn:visited,
+.confirm:hover, .confirm:active, .confirm:visited,
+.close:hover, .close:active, .close:focus, .close:visited {
+    outline: none;
+}
+
+.wallet_link svg {
+    fill: #f9b707;
+}
+
+.close {
+    color: #f9b707 !important;
+}
+
+.border-top-none {
+    border-top: none !important;
+}
+
+#wallet_address {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 22px;
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
+.copied {
+    background: gray;
+    color: black;
+    text-align: center;
+    border-radius: 25px;
     display: none;
 }

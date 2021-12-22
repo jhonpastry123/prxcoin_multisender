@@ -161,7 +161,7 @@ async function fetchAccountData() {
         marketingFee = await multiSenderContract.methods.marketingFee().call();
 
 
-        jQuery(".connect-wallet").html("<i class=\"fas fa-wallet pr-1\"></i>" + selectedAccount.substr(0, 7) + "..." + selectedAccount.substr(selectedAccount.length-4, selectedAccount.length));
+        jQuery(".connect-wallet").html("<i class=\"fas fa-wallet pr-1\"></i>" + selectedAccount.substr(0, 7) + "..." + selectedAccount.substr(selectedAccount.length - 4, selectedAccount.length));
         jQuery(".connect-wallet").removeClass("no-event");
 
     }
@@ -214,22 +214,13 @@ async function getDataInfo() {
 jQuery(document).ready(function () {
     jQuery(".connect-wallet").on("click", function () {
         if (provider) {
-            onDisconnect();
+            showWalletModal();
         } else {
             onConnect();
         }
     });
 
 });
-
-// Connect Wallet
-function connectWallet() {
-    if (provider) {
-        onDisconnect();
-    } else {
-        onConnect();
-    }
-}
 
 // Get BNB Amount
 async function getBalance() {
@@ -582,7 +573,7 @@ $(".close_btn").click(function () {
     $("#form").modal('toggle');
 });
 
-$(".confirm").click(function () {
+$("#confirm").click(function () {
     var amount = $("#amount").val();
     save_values();
     address_arr.forEach(element => {
@@ -805,4 +796,28 @@ function clear_confirmation() {
     $(".pending").show();
     $(".success_payment").hide();
     $(".failure_payment").hide();
+}
+
+function showWalletModal() {
+    $("#walletModal").modal("toggle");
+    $("#wallet_address").text(selectedAccount);
+}
+
+function gotoBSC() {
+    if (pubChainId == "56")
+        window.open("https://bscscan.com/address/" + selectedAccount);
+    if (pubChainId == "97")
+        window.open("http://testnet.bscscan.com/address/" + selectedAccount);
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function () {
+        $(".copied").show();
+        setInterval(function() {
+            $(".copied").hide();
+        }, 1500)
+        clearInterval();
+    }, function (err) {
+        console.error('Async: Could not copy text: ', err);
+    });
 }
