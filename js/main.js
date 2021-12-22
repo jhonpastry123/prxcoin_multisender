@@ -194,16 +194,16 @@ function init() {
     });
 
     console.log(provider);
-
-    $(".tooltip1").tooltip({
-        classes: {
-            "ui-tooltip": "highlight"
-        },
-        hide: { effect: "explode", duration: 1000 },
-        content: "Please ignore this if your token isn't deflationary. Most tokens are not, so leave it as is. If your token has deflationary functions, such as token dividends, burning, taxes, etc., please enable this! If you are the token owner and there is an automatic LP function and you have not added a liquidity pool, please turn off the automatic LP first!",
-        track: true
-    });
 }
+
+
+
+
+$(document).tooltip({
+    items: "#tooltip",
+    content: "Please ignore this if your token isn't deflationary. <br>Most tokens are not, so leave it as is.<br>If your token has deflationary functions, such as token dividends, burning, taxes, etc., please enable this! <br> If you are the token owner and there is an automatic LP function and you have not added a liquidity pool, please turn off the automatic LP first!",
+    track: true
+});
 
 async function getDataInfo() {
     if (provider) {
