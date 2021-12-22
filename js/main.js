@@ -193,10 +193,8 @@ function init() {
         disableInjectedProvider: isMobile, // optional. For MetaMask / Brave / Opera.
     });
 
-<<<<<<< HEAD
     console.log(provider);
 
-=======
     $(".tooltip1").tooltip({
         classes: {
             "ui-tooltip": "highlight"
@@ -205,7 +203,6 @@ function init() {
         content: "Please ignore this if your token isn't deflationary. Most tokens are not, so leave it as is. If your token has deflationary functions, such as token dividends, burning, taxes, etc., please enable this! If you are the token owner and there is an automatic LP function and you have not added a liquidity pool, please turn off the automatic LP first!",
         track: true
     });
->>>>>>> b56bccfade9a02a3da4ef6ff809c0006765a3bea
 }
 
 async function getDataInfo() {
