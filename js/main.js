@@ -766,7 +766,7 @@ async function set_table() {
         html = `<tr id="row_${row_id}">`;
         html += `<td class="heading-title underline"><a href="${netURL + element.wallet}" target="_blank">${element.wallet}</a> </td>`;
         html += `<td class="heading-title">${element.amount} ${token}</td>`;
-        html += `<td class="heading-title"><button class="btn btn-sm" onclick="remove(${row_id})">Remove</button></td>`;
+        html += `<td class="heading-title"><a onclick="remove(${row_id})">Remove</a></td>`;
         html += '</tr>';
 
         $('.table tbody').append(html);
