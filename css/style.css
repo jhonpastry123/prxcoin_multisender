@@ -711,7 +711,11 @@ td {
 .transaction_link {
     border: 1px #f9b707 solid;
     border-radius: 25px;
-    padding: 10px 0px;
+    padding: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
     display: none;
 }
 
