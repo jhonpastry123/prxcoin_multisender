@@ -79,12 +79,6 @@ async function onConnect() {
     provider.on("chainChanged", (chainId) => {
         fetchAccountData();
     });
-
-    // Subscribe to networkId change
-    provider.on("networkChanged", (networkId) => {
-        fetchAccountData();
-    });
-
 }
 
 function disableConnectWalletButton() {
@@ -105,7 +99,7 @@ async function onDisconnect() {
 
     if (provider) {
         try {
-            await provider.close();
+            await provider.disconnect();
         } catch (e) {
 
         }
@@ -122,8 +116,6 @@ async function fetchAccountData() {
 
     const chainId = await web3.eth.getChainId();
     const accounts = await web3.eth.getAccounts();
-
-    console.log(chainId);
 
     selectedAccount = accounts[0];
     pubChainId = chainId;
@@ -161,6 +153,9 @@ async function fetchAccountData() {
         return false;
     } else if (provider != null) {
 
+        jQuery(".connect-wallet").html("<i class=\"fas fa-wallet pr-1\"></i>" + selectedAccount.substr(0, 7) + "..." + selectedAccount.substr(selectedAccount.length - 4, selectedAccount.length));
+        jQuery(".connect-wallet").removeClass("no-event");
+
         // Call Multi Sender Contract
         web3BaseUrl_main = testMode ? 'https://speedy-nodes-nyc.moralis.io/28eb04c22a0f92b22765e175/bsc/testnet' : 'https://speedy-nodes-nyc.moralis.io/28eb04c22a0f92b22765e175/bsc/mainnet';
         web3_other = new Web3(new Web3.providers.HttpProvider(web3BaseUrl_main));
@@ -170,8 +165,7 @@ async function fetchAccountData() {
         // MultiSenderContract for web3
         multiSenderContract = new web3.eth.Contract(multiSenderAbi, multiSenderAddress);
 
-        jQuery(".connect-wallet").html("<i class=\"fas fa-wallet pr-1\"></i>" + selectedAccount.substr(0, 7) + "..." + selectedAccount.substr(selectedAccount.length - 4, selectedAccount.length));
-        jQuery(".connect-wallet").removeClass("no-event");
+        
 
     }
 }
@@ -197,12 +191,11 @@ function init() {
     };
 
     web3Modal = new Web3Modal({
-        cacheProvider: true, // optional
+        cacheProvider: false, // optional
         providerOptions, // required
-        disableInjectedProvider: isMobile, // optional. For MetaMask / Brave / Opera.
+        disableInjectedProvider: true, // optional. For MetaMask / Brave / Opera.
     });
 
-    console.log(provider);
 }
 
 
@@ -286,7 +279,6 @@ async function multiTransfer() {
 
     try {
         var result = await multiSenderContract.methods.multiTransfer(receivers, totalAmount, token_address, isBNB).send({ from: selectedAccount, value: value });
-        alert(result);
         return result.status;
     } catch (exception) {
         console.log(exception);
@@ -755,6 +747,7 @@ async function set_table() {
         cost = parseFloat(web3_other.utils.fromWei(marketingFee.toString(), "ether")) + totalAmount;
         $("#cost").text(cost.toFixed(3) + " BNB")
     } else {
+        cost = parseFloat(web3_other.utils.fromWei(marketingFee.toString(), "ether"));
         $("#cost").text(parseFloat(web3_other.utils.fromWei(marketingFee.toString(), "ether")).toFixed(3) + " BNB");
     }
 
