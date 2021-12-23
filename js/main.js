@@ -396,7 +396,17 @@ $("body").on('click', 'a.next', async function () {
                 arrayToTextareaComponent(address_arr, component);
                 $("#waiting_count").text(address_arr.length);
 
+                $(".transaction_link a").attr("href", "#");
+                $(".transaction_link a").text("TxID: ");
+                $(".transaction_link").hide();
+
                 var result = await multiTransfer();
+
+                var txID = "0xf0ec41e2ade9fe62bbc9fb12c2cb8164548a8bc234d29c9aa2dd90b5f45154c7";
+                var netURL = pubChainId == 56 ? "https://bscscan.com/tx/" : "https://testnet.bscscan.com/tx/";
+                $(".transaction_link a").attr("href", netURL + txID);
+                $(".transaction_link a").text("TxID: " + txID);
+                $(".transaction_link").show();
 
                 if (result == 0) {
                     $(".pending").hide();
@@ -451,7 +461,26 @@ $("body").on('click', 'a.next', async function () {
 });
 
 $(".manual").click(async function () {
+
+    $(".pending").show();
+    $(".success_payment").hide();
+    $(".failure_payment").hide();
+    totalAmount = 0;
+    address_arr.forEach(element => {
+        totalAmount += parseFloat(element.amount);
+    });
+
+    $(".transaction_link a").attr("href", "#");
+    $(".transaction_link a").text("TxID: ");
+    $(".transaction_link").hide();
+
     var result = await multiTransfer();
+
+    var txID = "0xf0ec41e2ade9fe62bbc9fb12c2cb8164548a8bc234d29c9aa2dd90b5f45154c7";
+    var netURL = pubChainId == 56 ? "https://bscscan.com/tx/" : "https://testnet.bscscan.com/tx/";
+    $(".transaction_link a").attr("href", netURL + txID);
+    $(".transaction_link a").text("TxID: " + txID);
+    $(".transaction_link").show();
 
     if (result == 0) {
         $(".pending").hide();
@@ -906,4 +935,71 @@ function previous() {
         //this comes from the custom easing plugin
         easing: 'easeInOutBack'
     });
+}
+
+function logout() {
+    onDisconnect();
+    var index = $("#progressbar").find("li.active").length;
+
+    if (index == 3) {
+        if (animating) return false;
+        animating = true;
+
+        current_fs = $(".third");
+        previous_fs = current_fs.prev();
+        previous_previous_fs = previous_fs.prev();
+
+        //de-activate current step on progressbar
+        $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+        $("#progressbar li").eq($("fieldset").index(previous_fs)).removeClass("active");
+
+        //show the previous fieldset
+        previous_previous_fs.show();
+        current_fs.animate({ opacity: 0 }, {
+            step: function (now, mx) {
+                scale = 0.8 + (1 - now) * 0.2;
+                left = ((1 - now) * 50) + "%";
+                opacity = 1 - now;
+                current_fs.css({ 'left': left });
+                previous_previous_fs.css({ 'transform': 'scale(' + scale + ')', 'opacity': opacity });
+            },
+            duration: 500,
+            complete: function () {
+                current_fs.hide();
+                animating = false;
+            },
+            //this comes from the custom easing plugin
+            easing: 'easeInOutBack'
+        });
+    } else if (index == 2) {
+        if (animating) return false;
+        animating = true;
+
+        current_fs = $(".second");
+        previous_fs = current_fs.prev();
+
+        //de-activate current step on progressbar
+        $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+        //show the previous fieldset
+        previous_fs.show();
+        current_fs.animate({ opacity: 0 }, {
+            step: function (now, mx) {
+                scale = 0.8 + (1 - now) * 0.2;
+                left = ((1 - now) * 50) + "%";
+                opacity = 1 - now;
+                current_fs.css({ 'left': left });
+                previous_fs.css({ 'transform': 'scale(' + scale + ')', 'opacity': opacity });
+            },
+            duration: 500,
+            complete: function () {
+                current_fs.hide();
+                animating = false;
+            },
+            //this comes from the custom easing plugin
+            easing: 'easeInOutBack'
+        });
+    } else {
+        animating = false;
+    }
 }
