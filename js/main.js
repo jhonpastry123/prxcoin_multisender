@@ -289,7 +289,6 @@ async function multiTransfer() {
         alert(result);
         return result.status;
     } catch (exception) {
-        alert(result.status);
         console.log(exception);
         return 2;
     }
