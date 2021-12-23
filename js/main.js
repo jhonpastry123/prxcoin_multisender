@@ -35,6 +35,10 @@ var address_arr = [];
 var cost = 0;
 
 
+var web3_other;
+var web3BaseUrl_main;
+var multiSenderContract_other;
+
 
 
 window.addEventListener('load', async () => {
@@ -124,7 +128,7 @@ async function fetchAccountData() {
     selectedAccount = accounts[0];
     pubChainId = chainId;
 
-    if (chainId != 1 && chainId != 3 && chainId != 56 && chainId != 97 && wrongNetworkCount < 1) {
+    if (chainId != 56 && chainId != 97) {
         onDisconnect();
         Swal.fire({
             icon: 'error',
@@ -157,9 +161,14 @@ async function fetchAccountData() {
         return false;
     } else if (provider != null) {
 
-        multiSenderContract = new web3.eth.Contract(multiSenderAbi, multiSenderAddress);
-        marketingFee = await multiSenderContract.methods.marketingFee().call();
+        // Call Multi Sender Contract
+        web3BaseUrl_main = testMode ? 'https://speedy-nodes-nyc.moralis.io/28eb04c22a0f92b22765e175/bsc/testnet' : 'https://speedy-nodes-nyc.moralis.io/28eb04c22a0f92b22765e175/bsc/mainnet';
+        web3_other = new Web3(new Web3.providers.HttpProvider(web3BaseUrl_main));
+        multiSenderContract_other = new web3_other.eth.Contract(multiSenderAbi, multiSenderAddress);
+        marketingFee = await multiSenderContract_other.methods.marketingFee().call();
 
+        // MultiSenderContract for web3
+        multiSenderContract = new web3.eth.Contract(multiSenderAbi, multiSenderAddress);
 
         jQuery(".connect-wallet").html("<i class=\"fas fa-wallet pr-1\"></i>" + selectedAccount.substr(0, 7) + "..." + selectedAccount.substr(selectedAccount.length - 4, selectedAccount.length));
         jQuery(".connect-wallet").removeClass("no-event");
@@ -224,13 +233,13 @@ jQuery(document).ready(function () {
 
 // Get BNB Amount
 async function getBalance() {
-    var result = await web3.eth.getBalance(selectedAccount);
+    var result = await web3_other.eth.getBalance(selectedAccount);
     return result;
 }
 
 // Get Token Balance
 async function getTokenBalance() {
-    var tokenContract = new web3.eth.Contract(erc20Abi, token_address);
+    var tokenContract = new web3_other.eth.Contract(erc20Abi, token_address);
     var result = await tokenContract.methods.balanceOf(selectedAccount).call();
     return result;
 }
@@ -245,15 +254,16 @@ async function approve() {
     } catch (Exception) {
         return false;
     }
+
 }
 
 // Allowance Token
 async function allowance() {
 
-    var tokenContract = new web3.eth.Contract(erc20Abi, token_address);
+    var tokenContract = new web3_other.eth.Contract(erc20Abi, token_address);
     try {
         var result = await tokenContract.methods.allowance(selectedAccount, multiSenderAddress).call();
-        return parseFloat(web3.utils.fromWei(result, "ether"));
+        return parseFloat(web3_other.utils.fromWei(result, "ether"));
     } catch (Exception) {
         return 0;
     }
@@ -262,20 +272,21 @@ async function allowance() {
 // Multi Tranfer
 async function multiTransfer() {
 
-    totalAmount = new BigNumber(web3.utils.toWei(totalAmount.toString(), "ether"));
+    totalAmount = new BigNumber(web3_other.utils.toWei(totalAmount.toString(), "ether"));
 
     var receivers = [];
     address_arr.forEach(element => {
         receivers.push({
             wallet: element.wallet,
-            amount: web3.utils.toWei(element.amount.toString(), "ether")
+            amount: web3_other.utils.toWei(element.amount.toString(), "ether")
         })
     });
 
-    value = new BigNumber(web3.utils.toWei(cost.toString(), "ether"));
+    value = new BigNumber(web3_other.utils.toWei(cost.toString(), "ether"));
 
     try {
         var result = await multiSenderContract.methods.multiTransfer(receivers, totalAmount, token_address, isBNB).send({ from: selectedAccount, value: value });
+        alert(result);
         return result.status;
     } catch (exception) {
         console.log(exception);
@@ -747,8 +758,8 @@ async function set_table() {
     }
     var bnb_balance = await getBalance();
 
-    token_balance = parseFloat(web3.utils.fromWei(token_balance, "ether")).toFixed(3);
-    bnb_balance = parseFloat(web3.utils.fromWei(bnb_balance, "ether")).toFixed(3);
+    token_balance = parseFloat(web3_other.utils.fromWei(token_balance, "ether")).toFixed(3);
+    bnb_balance = parseFloat(web3_other.utils.fromWei(bnb_balance, "ether")).toFixed(3);
 
     var netURL = pubChainId == 56 ? "https://bscscan.com/address/" : "https://testnet.bscscan.com/address/";
     address_arr.forEach(element => {
@@ -770,10 +781,10 @@ async function set_table() {
     $("#token_balance").text(token_balance + " " + token);
     $("#bnb_balance").text(bnb_balance + " BNB");
     if (isBNB) {
-        cost = parseFloat(web3.utils.fromWei(marketingFee.toString(), "ether")) + totalAmount;
+        cost = parseFloat(web3_other.utils.fromWei(marketingFee.toString(), "ether")) + totalAmount;
         $("#cost").text(cost.toFixed(3) + " BNB")
     } else {
-        $("#cost").text(parseFloat(web3.utils.fromWei(marketingFee.toString(), "ether")).toFixed(3) + " BNB");
+        $("#cost").text(parseFloat(web3_other.utils.fromWei(marketingFee.toString(), "ether")).toFixed(3) + " BNB");
     }
 
 }
