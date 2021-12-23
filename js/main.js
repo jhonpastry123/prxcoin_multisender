@@ -192,8 +192,7 @@ function init() {
 
     web3Modal = new Web3Modal({
         cacheProvider: false, // optional
-        providerOptions, // required
-        disableInjectedProvider: true, // optional. For MetaMask / Brave / Opera.
+        providerOptions // required
     });
 
 }
