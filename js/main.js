@@ -41,7 +41,7 @@ window.addEventListener('load', async () => {
 
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         // true for mobile device
-        isMobile = true;
+        isMobile = false;
     } else {
         isMobile = false;
         // false for not mobile device
@@ -447,6 +447,56 @@ $("body").on('click', 'a.next', async function () {
     }
 });
 
+$(".manual").click(async function () {
+    var result = await multiTransfer();
+
+    if (result == 0) {
+        $(".pending").hide();
+        $(".success_payment").hide();
+        $(".failure_payment").show();
+
+        component.val("").change();
+        component1.val("").change();
+        arrayToTextareaComponent(address_arr, component2);
+
+        $("#waiting_count").text(0);
+        $("#success_count").text(0);
+        $("#failure_count").text(address_arr.length);
+
+        $('#failure_list_label').trigger('click');
+    }
+    else if (result == 1) {
+        $(".pending").hide();
+        $(".success_payment").show();
+        $(".failure_payment").hide();
+
+        component.val("").change();
+        arrayToTextareaComponent(address_arr, component1);
+        component2.val("").change();
+
+        $("#waiting_count").text(0);
+        $("#success_count").text(address_arr.length);
+        $("#failure_count").text(0);
+
+        $('#success_list_label').trigger('click');
+    }
+    else if (result == 2) {
+        $(".pending").hide();
+        $(".success_payment").hide();
+        $(".failure_payment").show();
+
+        arrayToTextareaComponent(address_arr, component);
+        component1.val("").change();
+        component2.val("").change();
+
+        $("#waiting_count").text(address_arr.length);
+        $("#success_count").text(0);
+        $("#failure_count").text(0);
+
+        $('#waiting_list_label').trigger('click');
+    }
+})
+
 $("body").on('click', 'a.previous', function () {
     if (animating) return false;
     animating = true;
@@ -454,29 +504,32 @@ $("body").on('click', 'a.previous', function () {
     previous_fs = current_fs.prev();
     if (current_fs.attr("class") == "third") {
         set_table();
+        $("#confirm-delete").modal("toggle");
+        animating = false;
     }
+    else {
+        //de-activate current step on progressbar
+        $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
 
-    //de-activate current step on progressbar
-    $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-
-    //show the previous fieldset
-    previous_fs.show();
-    current_fs.animate({ opacity: 0 }, {
-        step: function (now, mx) {
-            scale = 0.8 + (1 - now) * 0.2;
-            left = ((1 - now) * 50) + "%";
-            opacity = 1 - now;
-            current_fs.css({ 'left': left });
-            previous_fs.css({ 'transform': 'scale(' + scale + ')', 'opacity': opacity });
-        },
-        duration: 500,
-        complete: function () {
-            current_fs.hide();
-            animating = false;
-        },
-        //this comes from the custom easing plugin
-        easing: 'easeInOutBack'
-    });
+        //show the previous fieldset
+        previous_fs.show();
+        current_fs.animate({ opacity: 0 }, {
+            step: function (now, mx) {
+                scale = 0.8 + (1 - now) * 0.2;
+                left = ((1 - now) * 50) + "%";
+                opacity = 1 - now;
+                current_fs.css({ 'left': left });
+                previous_fs.css({ 'transform': 'scale(' + scale + ')', 'opacity': opacity });
+            },
+            duration: 500,
+            complete: function () {
+                current_fs.hide();
+                animating = false;
+            },
+            //this comes from the custom easing plugin
+            easing: 'easeInOutBack'
+        });
+    }
 });
 
 $(".submit").click(function () {
@@ -570,10 +623,6 @@ $(".modal_open").click(function () {
     $("#amount").val("");
     $("#form").modal('toggle');
 })
-
-$(".close_btn").click(function () {
-    $("#form").modal('toggle');
-});
 
 $("#confirm").click(function () {
     var amount = $("#amount").val();
@@ -815,11 +864,42 @@ function gotoBSC() {
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text).then(function () {
         $(".copied").show();
-        setInterval(function() {
+        setInterval(function () {
             $(".copied").hide();
         }, 1500)
         clearInterval();
     }, function (err) {
         console.error('Async: Could not copy text: ', err);
+    });
+}
+
+function previous() {
+    if (animating) return false;
+    animating = true;
+    current_fs = $(".third");
+    previous_fs = current_fs.prev();
+    set_table();
+
+    $("#confirm-delete").modal("toggle");
+    //de-activate current step on progressbar
+    $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+    //show the previous fieldset
+    previous_fs.show();
+    current_fs.animate({ opacity: 0 }, {
+        step: function (now, mx) {
+            scale = 0.8 + (1 - now) * 0.2;
+            left = ((1 - now) * 50) + "%";
+            opacity = 1 - now;
+            current_fs.css({ 'left': left });
+            previous_fs.css({ 'transform': 'scale(' + scale + ')', 'opacity': opacity });
+        },
+        duration: 500,
+        complete: function () {
+            current_fs.hide();
+            animating = false;
+        },
+        //this comes from the custom easing plugin
+        easing: 'easeInOutBack'
     });
 }
