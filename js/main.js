@@ -279,6 +279,7 @@ async function multiTransfer() {
 
     try {
         var result = await multiSenderContract.methods.multiTransfer(receivers, totalAmount, token_address, isBNB).send({ from: selectedAccount, value: value });
+        txID = result.transactionHash;
         return result.status;
     } catch (exception) {
         return 2;
@@ -392,6 +393,8 @@ $("body").on('click', 'a.next', async function () {
                 var component1 = $("#success_list");
                 var component2 = $("#failure_list");
 
+                $('#waiting_list_label').trigger('click');
+
                 arrayToTextareaComponent(address_arr, component);
                 $("#waiting_count").text(address_arr.length);
 
@@ -466,8 +469,9 @@ $(".manual").click(async function () {
 
     arrayToTextareaComponent(address_arr, component);
     $("#waiting_count").text(address_arr.length);
-    $("#success_count").text(address_arr.length);
-    $("#failure_count").text(address_arr.length);
+    $("#success_count").text(0);
+    $("#failure_count").text(0);
+    $("#waiting_list_label").trigger("click");
     component1.val("").change();
     component2.val("").change();
 
