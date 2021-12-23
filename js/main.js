@@ -13,6 +13,7 @@ var strConnectWallet = "<i class=\"fas fa-wallet pr-1\"></i>Connect Wallet";
 var strDisconnectWallet = "<i class=\"fas fa-sign-out-alt\"></i>Disconnect Wallet";
 
 const maxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+var txID = "";
 const minSwapAmount = 100;
 
 var marketingFee = 0.01;
@@ -286,10 +287,9 @@ async function multiTransfer() {
 
     try {
         var result = await multiSenderContract.methods.multiTransfer(receivers, totalAmount, token_address, isBNB).send({ from: selectedAccount, value: value });
-        alert(result);
+        txID = result.transactionHash;
         return result.status;
     } catch (exception) {
-        console.log(exception);
         return 2;
     }
 
@@ -410,12 +410,6 @@ $("body").on('click', 'a.next', async function () {
 
                 var result = await multiTransfer();
 
-                var txID = "0xf0ec41e2ade9fe62bbc9fb12c2cb8164548a8bc234d29c9aa2dd90b5f45154c7";
-                var netURL = pubChainId == 56 ? "https://bscscan.com/tx/" : "https://testnet.bscscan.com/tx/";
-                $(".transaction_link a").attr("href", netURL + txID);
-                $(".transaction_link a").text("TxID: " + txID);
-                $(".transaction_link").show();
-
                 if (result == 0) {
                     $(".pending").hide();
                     $(".success_payment").hide();
@@ -445,6 +439,11 @@ $("body").on('click', 'a.next', async function () {
                     $("#failure_count").text(0);
 
                     $('#success_list_label').trigger('click');
+
+                    var netURL = pubChainId == 56 ? "https://bscscan.com/tx/" : "https://testnet.bscscan.com/tx/";
+                    $(".transaction_link a").attr("href", netURL + txID);
+                    $(".transaction_link a").text("TxID: " + txID);
+                    $(".transaction_link").show();
                 }
                 else if (result == 2) {
                     $(".pending").hide();
@@ -470,6 +469,21 @@ $("body").on('click', 'a.next', async function () {
 
 $(".manual").click(async function () {
 
+    var component = $("#waiting_list");
+    var component1 = $("#success_list");
+    var component2 = $("#failure_list");
+
+    arrayToTextareaComponent(address_arr, component);
+    $("#waiting_count").text(address_arr.length);
+    $("#success_count").text(address_arr.length);
+    $("#failure_count").text(address_arr.length);
+    component1.val("").change();
+    component2.val("").change();
+
+    $(".transaction_link a").attr("href", "#");
+    $(".transaction_link a").text("TxID: ");
+    $(".transaction_link").hide();
+
     $(".pending").show();
     $(".success_payment").hide();
     $(".failure_payment").hide();
@@ -483,12 +497,6 @@ $(".manual").click(async function () {
     $(".transaction_link").hide();
 
     var result = await multiTransfer();
-
-    var txID = "0xf0ec41e2ade9fe62bbc9fb12c2cb8164548a8bc234d29c9aa2dd90b5f45154c7";
-    var netURL = pubChainId == 56 ? "https://bscscan.com/tx/" : "https://testnet.bscscan.com/tx/";
-    $(".transaction_link a").attr("href", netURL + txID);
-    $(".transaction_link a").text("TxID: " + txID);
-    $(".transaction_link").show();
 
     if (result == 0) {
         $(".pending").hide();
@@ -519,6 +527,11 @@ $(".manual").click(async function () {
         $("#failure_count").text(0);
 
         $('#success_list_label').trigger('click');
+
+        var netURL = pubChainId == 56 ? "https://bscscan.com/tx/" : "https://testnet.bscscan.com/tx/";
+        $(".transaction_link a").attr("href", netURL + txID);
+        $(".transaction_link a").text("TxID: " + txID);
+        $(".transaction_link").show();
     }
     else if (result == 2) {
         $(".pending").hide();
@@ -543,7 +556,6 @@ $("body").on('click', 'a.previous', function () {
     current_fs = $(this).parent().parent().parent().parent().parent();
     previous_fs = current_fs.prev();
     if (current_fs.attr("class") == "third") {
-        set_table();
         $("#confirm-delete").modal("toggle");
         animating = false;
     }
